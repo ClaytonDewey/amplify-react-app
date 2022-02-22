@@ -7,13 +7,21 @@ import { API } from "aws-amplify";
 import "./App.css";
 
 const App = () => {
+    // Create additional state to hold user input for limit and start properties
+    const [input, updateInput] = useState({ limit: 5, start: 0 });
+
+    // Create a new function to allow users to update the input value
+    const updateInputValues = (type, value) => {
+        updateInput({ ...input, [type]: value });
+    };
+
     // Create coins variable and set to empty array
     const [coins, updateCoins] = useState([]);
 
-    // Define function to all API
+    // Update fetchCoins function to use limit and start properties
     const fetchCoins = async () => {
-        const data = await API.get("cryptoapi", "/coins");
-        console.log(data);
+        const { limit, start } = input;
+        const data = await API.get("cryptoapi", `/coins?limit=${limit}&start=${start}`);
         updateCoins(data.coins);
     };
 
@@ -24,6 +32,11 @@ const App = () => {
 
     return (
         <div className="App">
+            {/* Add input fields to the UI for user input */}
+            <input onChange={(e) => updateInputValues("limit", e.target.value)} placeholder="limit" />
+            <input placeholder="start" onChange={(e) => updateInputValues("start", e.target.value)} />
+            {/* Add button to the UI to give user the option to call the API */}
+            <button onClick={fetchCoins}>Fetch Coins</button>
             {coins.map((coin) => (
                 <div key={coin.name}>
                     <h2>
