@@ -49,6 +49,18 @@ app.get("/coins", (req, res) => {
         .catch((err) => res.json({ error: err }));
 });
 
+app.get("/born", async (req, res) => {
+    try {
+        const data = await axios.get("https://api.github.com/users/ClaytonDewey");
+        res.json({
+            bornOnInfo: data.data
+        })
+    }
+    catch (err) {
+        res.json({ error: err })
+    }
+});
+
 app.get("/item", function (req, res) {
     // Add your code here
     res.json({ success: "get call succeed!", url: req.url });
