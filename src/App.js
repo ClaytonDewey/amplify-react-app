@@ -6,6 +6,8 @@ import { API } from "aws-amplify";
 
 import "./App.css";
 
+import { GitHubBornOn } from "./GitHubBornOn";
+
 const App = () => {
     // Create additional state to hold user input for limit and start properties
     const [input, updateInput] = useState({ limit: 5, start: 0 });
@@ -39,7 +41,6 @@ const App = () => {
 
     return (
         <div className="App">
-
             {loading && <h2>Loading...</h2>}
 
             {!loading && <div>
@@ -56,6 +57,7 @@ const App = () => {
                         <h5>${coin.price_usd}</h5>
                     </div>
                 ))}
+                <GitHubBornOn />
             </div>
             }
         </div>
