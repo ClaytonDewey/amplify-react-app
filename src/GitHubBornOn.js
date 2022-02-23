@@ -5,21 +5,25 @@ import { API } from "aws-amplify";
 
 export const GitHubBornOn = () => {
 
-    const [bornOn, updateBornOn] = useState({ created_at: "" });
+    const [bornOnInfo, updateBornOnInfo] = useState({});
 
-    const fetchDate = async () => {
-        const { created_at } = bornOn;
+    const fetchBornOnInfo = async () => {
 
-        const data = await API.get("cryptoapi", `/born`);
-        console.log(created_at)
-        updateBornOn(data.bornOn);
+        try {
+            const data = await API.get("cryptoapi", "/born");
+            updateBornOnInfo(data.bornOnInfo);
+        }
+        catch (err) {
+            console.log(err)
+        }
+
     }
 
     useEffect(() => {
-        fetchDate();
+        fetchBornOnInfo();
     }, [])
 
     return (
-        <h2>Well...</h2>
+        <h2>{bornOnInfo.login} - {bornOnInfo.created_at}</h2>
     )
 };
