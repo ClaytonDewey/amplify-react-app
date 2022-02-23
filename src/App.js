@@ -6,6 +6,8 @@ import { API } from "aws-amplify";
 
 import "./App.css";
 
+import { Loading } from "./Loading";
+
 import { GitHubBornOn } from "./GitHubBornOn";
 
 const App = () => {
@@ -20,12 +22,11 @@ const App = () => {
     // Create coins variable and set to empty array
     const [coins, updateCoins] = useState([]);
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
 
     // Update fetchCoins function to use limit and start properties
     const fetchCoins = async () => {
-
-        setLoading(true)
+        setLoading(true);
 
         const { limit, start } = input;
         const data = await API.get("cryptoapi", `/coins?limit=${limit}&start=${start}`);
@@ -41,25 +42,26 @@ const App = () => {
 
     return (
         <div className="App">
-            {loading && <h2>Loading...</h2>}
+            {loading && <Loading />}
 
-            {!loading && <div>
-                {/* Add input fields to the UI for user input */}
-                <input onChange={(e) => updateInputValues("limit", e.target.value)} placeholder="limit" />
-                <input placeholder="start" onChange={(e) => updateInputValues("start", e.target.value)} />
-                {/* Add button to the UI to give user the option to call the API */}
-                <button onClick={fetchCoins}>Fetch Coins</button>
-                {coins.map((coin) => (
-                    <div key={coin.name}>
-                        <h2>
-                            {coin.name} - {coin.symbol}
-                        </h2>
-                        <h5>${coin.price_usd}</h5>
-                    </div>
-                ))}
-                <GitHubBornOn />
-            </div>
-            }
+            {!loading && (
+                <div>
+                    {/* Add input fields to the UI for user input */}
+                    <input onChange={(e) => updateInputValues("limit", e.target.value)} placeholder="limit" />
+                    <input placeholder="start" onChange={(e) => updateInputValues("start", e.target.value)} />
+                    {/* Add button to the UI to give user the option to call the API */}
+                    <button onClick={fetchCoins}>Fetch Coins</button>
+                    {coins.map((coin) => (
+                        <div key={coin.name}>
+                            <h2>
+                                {coin.name} - {coin.symbol}
+                            </h2>
+                            <h5>${coin.price_usd}</h5>
+                        </div>
+                    ))}
+                    <GitHubBornOn />
+                </div>
+            )}
         </div>
     );
 };
